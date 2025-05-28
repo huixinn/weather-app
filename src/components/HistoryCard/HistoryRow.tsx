@@ -22,7 +22,7 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
           {historyData?.city}, {historyData?.countryCode}
         </div>
         <div className="date-time">
-          <div>{historyData?.dateTime}</div>
+          <div>{historyData?.currentDateTime}</div>
         </div>
       </div>
       <div className="history-buttons">

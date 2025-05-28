@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { WeatherData } from "../types/weatherType";
 import { fetchWeatherByCity } from "../apis/weatherApi";
 import {
+  formatDateTime,
   getCurrentDateTime,
   kelvinToCelsius,
   mapErrorMessage,
@@ -59,7 +60,8 @@ const mapWeatherData = (data: WeatherApiResponse): WeatherData => {
     city: data?.name,
     country: data?.name,
     countryCode: data?.sys?.country,
-    dateTime: getCurrentDateTime(),
+    localDateTime: formatDateTime(data?.dt, data?.timezone),
+    currentDateTime: getCurrentDateTime(),
     temperature: kelvinToCelsius(data?.main?.temp),
     maxTemp: kelvinToCelsius(data?.main?.temp_max),
     minTemp: kelvinToCelsius(data?.main?.temp_min),

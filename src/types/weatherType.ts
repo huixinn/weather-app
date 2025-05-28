@@ -3,7 +3,10 @@ export interface WeatherData {
   city: string;
   country: string;
   countryCode: string;
-  dateTime: string;
+  // current time of search
+  currentDateTime: string;
+  // time in searched country
+  localDateTime?: string;
   temperature: number;
   maxTemp: number;
   minTemp: number;

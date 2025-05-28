@@ -8,6 +8,29 @@ export const getCurrentDateTime = (): string => {
   return format(new Date(), "dd-MM-yyyy hh:mmaaa").toLowerCase();
 };
 
+export const formatDateTime = (
+  dt: number,
+  timezoneOffsetInSeconds: number
+): string => {
+  const utcMillis = dt * 1000;
+  const localMillis = utcMillis + timezoneOffsetInSeconds * 1000;
+  const localDate = new Date(localMillis);
+
+  const day = String(localDate.getUTCDate()).padStart(2, "0");
+  const month = String(localDate.getUTCMonth() + 1).padStart(2, "0");
+  const year = localDate.getUTCFullYear();
+
+  let hours = localDate.getUTCHours();
+  const minutes = String(localDate.getUTCMinutes()).padStart(2, "0");
+  const ampm = hours >= 12 ? "pm" : "am";
+
+  hours = hours % 12;
+  hours = hours === 0 ? 12 : hours;
+  const hourStr = String(hours).padStart(2, "0");
+
+  return `${day}-${month}-${year} ${hourStr}:${minutes}${ampm}`;
+};
+
 export const kelvinToCelsius = (temperature: number): number => {
   return Math.round(temperature - 273.15);
 };

@@ -42,7 +42,7 @@ const WeatherCard = ({
         <div className="col-item country-title">
           {weatherData?.city}, {weatherData?.countryCode}
         </div>
-        <div className="col-item">{weatherData?.dateTime}</div>
+        <div className="col-item">{weatherData?.localDateTime}</div>
         <div className="col-item">Humidity: {weatherData?.humidity}%</div>
         <div className="col-item">{weatherData?.weatherDesc}</div>
       </div>
