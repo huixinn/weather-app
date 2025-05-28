@@ -2,50 +2,69 @@ import { useState } from "react";
 import type { WeatherData } from "../types/weatherType";
 import { fetchWeatherByCity } from "../apis/weatherApi";
 import {
-  getFormattedDateTime,
+  getCurrentDateTime,
   kelvinToCelsius,
+  mapErrorMessage,
   saveSearchHistory,
 } from "../utils/utils";
 import { v4 as uuidv4 } from "uuid";
+import { type WeatherApiResponse } from "../apis/types/weatherResponse";
 
 export const useFetchWeather = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const fetchWeather = async (city: string) => {
     setIsLoading(true);
+    try {
+      const response = await fetchWeatherByCity(city);
+      const data = await response.json();
 
-    const results = await fetchWeatherByCity(city);
+      if (!response?.ok) {
+        const status = response?.status;
+        setError(true);
+        setErrorMessage(mapErrorMessage(status));
+        setIsLoading(false);
+        return;
+      }
 
-    if (results) {
-      const mappedData: WeatherData = {
-        id: uuidv4(),
-        city: results?.name,
-        country: results?.name,
-        countryCode: results?.sys?.country,
-        dateTime: getFormattedDateTime(),
-        temperature: kelvinToCelsius(results?.main?.temp),
-        maxTemp: kelvinToCelsius(results?.main?.temp_max),
-        minTemp: kelvinToCelsius(results?.main?.temp_min),
-        humidity: results?.main?.humidity,
-        weatherDesc: results?.weather?.[0]?.main,
-      };
+      const mappedData = mapWeatherData(data);
       setWeatherData(mappedData);
-      saveSearchHistory(mappedData);
-      console.log("hx useFetchWeather results", mappedData);
-    } else {
-      setError(true);
-      console.log("hx useFetchWeather error", error);
-    }
 
-    setIsLoading(false);
+      saveSearchHistory(mappedData);
+      setIsLoading(false);
+      setError(false);
+      setErrorMessage("");
+    } catch (error) {
+      setError(true);
+      setErrorMessage("Error fetching weather");
+      console.log("Error fetching weather", error);
+    }
   };
 
   return {
     weatherData,
     isLoading,
     error,
+    errorMessage,
     fetchWeather,
   };
+};
+
+const mapWeatherData = (data: WeatherApiResponse): WeatherData => {
+  const mappedData: WeatherData = {
+    id: uuidv4(),
+    city: data?.name,
+    country: data?.name,
+    countryCode: data?.sys?.country,
+    dateTime: getCurrentDateTime(),
+    temperature: kelvinToCelsius(data?.main?.temp),
+    maxTemp: kelvinToCelsius(data?.main?.temp_max),
+    minTemp: kelvinToCelsius(data?.main?.temp_min),
+    humidity: data?.main?.humidity,
+    weatherDesc: data?.weather?.[0]?.main,
+  };
+  return mappedData;
 };

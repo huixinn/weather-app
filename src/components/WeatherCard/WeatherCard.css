@@ -4,8 +4,11 @@
   width: 90%;
   height: 100vh;
   max-width: 700px;
-  margin-top: 5rem;
+  margin-top: 6rem;
   padding: 2.5rem;
+
+  display: flex;
+  justify-content: center;
 
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 40px;
@@ -26,9 +29,27 @@
   font-weight: 400;
   font-size: 1rem;
   line-height: 100%;
+  width: 100%;
 }
 
-.custom-grid {
+.default-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* color: rgba(102, 102, 102, 1); */
+  color: rgba(108, 64, 181, 1);
+  width: 100%;
+  padding: 2rem;
+  padding-top: 3.5rem;
+  box-sizing: border-box;
+}
+
+.default-content p {
+  font-weight: 700;
+}
+
+.weather-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
@@ -48,7 +69,7 @@
   white-space: nowrap;
 }
 
-.temperature-content {
+.temperature-title {
   font-size: 5rem;
   font-weight: 800;
   color: rgba(108, 64, 181, 1);
@@ -80,7 +101,7 @@
     height: 10rem;
   }
 
-  .custom-grid {
+  .weather-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;

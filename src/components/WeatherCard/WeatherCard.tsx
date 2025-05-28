@@ -2,13 +2,20 @@ import type { WeatherData } from "../../types/weatherType";
 import HistoryCard from "../HistoryCard/HistoryCard";
 import "./WeatherCard.css";
 import SunImg from "../../assets/sun.png";
-
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
 export interface WeatherCardProps {
   weatherData: WeatherData | null;
   historyData?: WeatherData[];
+  onSearch: (country: string) => void;
+  onDelete: (id: string) => void;
 }
 
-const WeatherCard = ({ weatherData, historyData }: WeatherCardProps) => {
+const WeatherCard = ({
+  weatherData,
+  historyData,
+  onSearch,
+  onDelete,
+}: WeatherCardProps) => {
   const renderWeatherIcon = () => {
     return <img className="weather-icon" src={SunImg} />;
   };
@@ -16,15 +23,17 @@ const WeatherCard = ({ weatherData, historyData }: WeatherCardProps) => {
   const renderDefaultContent = () => {
     return (
       <div className="default-content">
-        <div className="title">-</div>
+        <WbSunnyIcon sx={{ fontSize: 50 }} />
+        <p>Ready to explore!</p>
+        <div>Search for a city to get started</div>
       </div>
     );
   };
 
   const renderWeatherContent = () => {
     return (
-      <div className="custom-grid">
-        <div className="row-item col-item temperature-content">
+      <div className="weather-grid">
+        <div className="row-item col-item temperature-title">
           {weatherData?.temperature}°
         </div>
         <div className="row-item col-item">
@@ -46,7 +55,11 @@ const WeatherCard = ({ weatherData, historyData }: WeatherCardProps) => {
       <div className="weather-card">
         <div className="title">Today's weather</div>
         {weatherData ? renderWeatherContent() : renderDefaultContent()}
-        <HistoryCard historyData={historyData} />
+        <HistoryCard
+          historyData={historyData}
+          onSearch={onSearch}
+          onDelete={onDelete}
+        />
       </div>
     </div>
   );

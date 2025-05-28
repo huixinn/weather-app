@@ -1,3 +1,9 @@
+export enum HttpStatusCode {
+  UNAUTHORIZED = 401,
+  NOT_FOUND = 404,
+  BAD_REQUEST = 400,
+  INTERNAL_SERVER_ERROR = 500,
+}
 export interface WeatherApiResponse {
   coord: Coord;
   weather: Weather[];
@@ -51,4 +57,9 @@ export interface Sys {
   country: string;
   sunrise: number;
   sunset: number;
+}
+
+export interface WeatherApiErrorResponse {
+  cod: string;
+  message: string;
 }

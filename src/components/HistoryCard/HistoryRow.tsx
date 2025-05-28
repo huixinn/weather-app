@@ -1,87 +1,49 @@
-import { IconButton } from "@mui/material";
 import SearchIcon from "../../assets/icons/search.png";
 import DeleteIcon from "../../assets/icons/delete.png";
 
 import type { WeatherData } from "../../types/weatherType";
-import { deleteHistoryItem } from "../../utils/utils";
+import "../HistoryCard/HistoryCard.css";
 
 export interface HistoryRowProps {
   historyData: WeatherData;
-  onSearch?: (country: string) => void;
-  onDelete?: (id: string) => void;
+  onSearch: (country: string) => void;
+  onDelete: (id: string) => void;
 }
 
-const HistoryRow: React.FC<HistoryRowProps> = ({ historyData }) => {
-  const handleDelete = () => {
-    deleteHistoryItem(historyData?.id);
-  };
-
+const HistoryRow: React.FC<HistoryRowProps> = ({
+  historyData,
+  onSearch,
+  onDelete,
+}) => {
   return (
     <div className="history-row">
-      {historyData && (
-        <>
-          <div>
-            {historyData?.city}, {historyData?.countryCode}
-          </div>
-          <div className="history-details">
-            <div>{historyData?.dateTime}</div>
-            <div className="history-buttons">
-              <IconButton
-                onClick={() => console.log("search history")}
-                sx={{
-                  bgcolor: "white",
-                  borderRadius: "50%",
-                  width: 40,
-                  height: 40,
-                  boxShadow: "0 2px 5px rgba(0,0,0,0.15)",
-                  "&:hover": {
-                    bgcolor: "rgba(255,255,255,0.9)",
-                  },
-                }}
-                aria-label="search"
-                size="large"
-              >
-                <img
-                  src={SearchIcon}
-                  alt="search icon"
-                  style={{
-                    width: 20,
-                    height: 20,
-                    objectFit: "contain",
-                    opacity: "50%",
-                  }}
-                />
-              </IconButton>
-              <IconButton
-                onClick={handleDelete}
-                sx={{
-                  bgcolor: "white",
-                  borderRadius: "50%",
-                  width: 40,
-                  height: 40,
-                  boxShadow: "0 2px 5px rgba(0,0,0,0.15)",
-                  "&:hover": {
-                    bgcolor: "rgba(255,255,255,0.9)",
-                  },
-                }}
-                aria-label="search"
-                size="large"
-              >
-                <img
-                  src={DeleteIcon}
-                  alt="search icon"
-                  style={{
-                    width: 20,
-                    height: 20,
-                    objectFit: "contain",
-                    opacity: "50%",
-                  }}
-                />
-              </IconButton>
-            </div>
-          </div>
-        </>
-      )}
+      <div className="history-details">
+        <div className="city-title">
+          {historyData?.city}, {historyData?.countryCode}
+        </div>
+        <div className="date-time">
+          <div>{historyData?.dateTime}</div>
+        </div>
+      </div>
+      <div className="history-buttons">
+        <div className="history-button-group">
+          <button
+            className="button-icon"
+            onClick={() => onSearch(historyData?.city)}
+            aria-label="search"
+          >
+            <img src={SearchIcon} alt="search icon" className="icon-img" />
+          </button>
+
+          <button
+            className="button-icon"
+            onClick={() => onDelete(historyData?.id)}
+            aria-label="delete"
+          >
+            <img src={DeleteIcon} alt="delete icon" className="icon-img" />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
